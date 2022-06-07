@@ -31,7 +31,23 @@
                         </p>
                     </a>
                 </li>
-                {{-- <li class="nav-item {{ request()->is('admin/master-data/*') ? 'menu-open' : '' }}">
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                        <i class="nav-icon fas fa-graduation-cap"></i>
+                        <p>
+                            Data Siswa
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                        <i class="nav-icon fas fa-exchange-alt"></i>
+                        <p>
+                            Transaksi
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item {{ request()->is('admin/master-data/*') ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ request()->is('admin/master-data/*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-server"></i>
                         <p>
@@ -39,23 +55,21 @@
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
+                    {{-- <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('admin.positions.index') }}"
-                                class="nav-link {{ request()->routeIs('admin.positions.index') ? 'active' : '' }}">
+                            <a href="" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Jabatan</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('admin.teachers.index') }}"
-                                class="nav-link {{ request()->routeIs('admin.teachers.index') ? 'active' : '' }}">
+                            <a href="" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Data Guru</p>
                             </a>
                         </li>
-                    </ul>
-                </li> --}}
+                    </ul> --}}
+                </li>
                 {{-- <li class="nav-item">
                     <a href="{{ route('admin.incoming-product.index') }}"
                         class="nav-link {{ request()->routeIs('admin.incoming-product.index') ? 'active' : '' }}">
