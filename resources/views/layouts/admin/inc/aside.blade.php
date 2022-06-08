@@ -3,7 +3,7 @@
     <a href="index3.html" class="brand-link">
         {{-- <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
             style="opacity: .8"> --}}
-        <span class="brand-text font-weight-light">Penggajian</span>
+        <span class="brand-text font-weight-light">PPDB</span>
     </a>
 
     <!-- Sidebar -->
@@ -55,57 +55,15 @@
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
-                    {{-- <ul class="nav nav-treeview">
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Jabatan</p>
+                                <p>Data Pembayaran</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Data Guru</p>
-                            </a>
-                        </li>
-                    </ul> --}}
+                    </ul>
                 </li>
-                {{-- <li class="nav-item">
-                    <a href="{{ route('admin.incoming-product.index') }}"
-                        class="nav-link {{ request()->routeIs('admin.incoming-product.index') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-file-download"></i>
-                        <p>
-                            Barang Masuk
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.product-out.index') }}"
-                        class="nav-link {{ request()->routeIs('admin.product-out.index') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-file-upload"></i>
-                        <p>
-                            Barang Keluar
-                        </p>
-                    </a>
-                </li> --}}
-                {{-- <li class="nav-item">
-                    <a href="{{ route('admin.attendances.index') }}"
-                        class="nav-link {{ request()->routeIs('admin.attendances.index') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-calendar-check"></i>
-                        <p>
-                            Data Absen
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.salaries.index') }}"
-                        class="nav-link {{ request()->routeIs('admin.salaries.index') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-hand-holding-usd"></i>
-                        <p>
-                            Data Gaji
-                        </p>
-                    </a>
-                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('logout') }}"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
