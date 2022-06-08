@@ -27,6 +27,19 @@ class Student extends Model
         'alamat_ortu',
         'nama_wali',
         'pekerjaan_wali',
-        'alamat_wali'
+        'alamat_wali',
+        'user_id'
     ];
+
+    public function getJenisKelaminAttribute($value)
+    {
+        switch ($value) {
+            case 'L':
+                return 'Laki-laki';
+                break;
+            case 'P':
+                return 'Perempuan';
+                break;
+        }
+    }
 }

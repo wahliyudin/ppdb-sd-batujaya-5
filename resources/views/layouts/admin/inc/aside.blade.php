@@ -32,7 +32,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-link">
+                    <a href="{{ route('admin.students.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.students.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-graduation-cap"></i>
                         <p>
                             Data Siswa
@@ -70,6 +71,14 @@
                             </a>
                         </li>
                     </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                        <i class="nav-icon fas fa-file-contract"></i>
+                        <p>
+                            Laporan
+                        </p>
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('logout') }}"

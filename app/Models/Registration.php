@@ -9,10 +9,20 @@ class Registration extends Model
 {
     use HasFactory;
 
+    const STATUS_KEMBALIKAN = -1;
+    const STATUS_BELUM_DIKIRIM = 0;
+    const STATUS_SUDAH_KIRIM = 1;
+    const STATUS_VERIFIKASI = 2;
+    const STATUS_TOLAK = 3;
+    const STATUS_LULUS = 4;
+    const STATUS_TIDAK_LULUS = 5;
+
     protected $fillable = [
         'no_daftar',
         'tanggal',
-        'student_id'
+        'user_id',
+        'status_kelulusan',
+        'catatan_kelulusan'
     ];
 
     public function student()

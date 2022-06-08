@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\TypePaymentController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::prefix('tipe-pembayaran')->name('type-payments.')->group(function () {
             Route::get('/', [TypePaymentController::class, 'index'])->name('index');
         });
+    });
+
+    Route::prefix('data-siswa')->name('students.')->group(function () {
+        Route::get('/', [StudentController::class, 'index'])->name('index');
+        Route::get('create', [StudentController::class, 'create'])->name('create');
+        Route::get('{id}/edit', [StudentController::class, 'edit'])->name('edit');
     });
 });
 

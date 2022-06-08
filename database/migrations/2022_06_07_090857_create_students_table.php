@@ -33,6 +33,9 @@ class CreateStudentsTable extends Migration
             $table->string('nama_wali')->nullable();
             $table->string('pekerjaan_wali')->nullable();
             $table->string('alamat_wali')->nullable();
+            $table->unsignedBigInteger('user_id');
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

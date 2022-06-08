@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\StudentController;
 use App\Http\Controllers\API\TypePaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,5 +25,11 @@ Route::name('api.')->group(function () {
         Route::post('update-or-create', [TypePaymentController::class, 'updateOrCreate'])->name('update-or-create');
         Route::get('{id}/edit', [TypePaymentController::class, 'edit'])->name('edit');
         Route::delete('{id}/destroy', [TypePaymentController::class, 'destroy'])->name('destroy');
+    });
+    Route::prefix('students')->name('students.')->group(function () {
+        Route::post('/', [StudentController::class, 'index'])->name('index');
+        Route::post('update-or-create', [StudentController::class, 'updateOrCreate'])->name('update-or-create');
+        Route::get('{id}/edit', [StudentController::class, 'edit'])->name('edit');
+        Route::delete('{id}/destroy', [StudentController::class, 'destroy'])->name('destroy');
     });
 });
