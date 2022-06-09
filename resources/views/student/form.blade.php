@@ -3,7 +3,78 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12">
+            @if (isset($registration))
+                <div class="col-md-4">
+                    <!-- The time line -->
+                    <div class="timeline">
+                        <!-- timeline time label -->
+                        <div class="time-label">
+                            <span
+                                class="bg-red">{{ \Carbon\Carbon::make($registration->tanggal)->isoFormat('DD MMMM, Y') }}</span>
+                        </div>
+                        <!-- /.timeline-label -->
+                        <!-- timeline item -->
+                        <div>
+                            <i class="fas fa-paper-plane bg-blue"></i>
+                            <div class="timeline-item">
+                                <span class="time"><i class="fas fa-clock"></i> 5 mins ago</span>
+                                <h3 class="timeline-header no-border">
+                                    Data Berhasil Dikirim
+                                </h3>
+                            </div>
+                        </div>
+
+                        <!-- END timeline item -->
+                        <!-- timeline item -->
+                        <div>
+                            @if (in_array($registration->status_kelulusan, [\App\Models\Registration::STATUS_VERIFIKASI, \App\Models\Registration::STATUS_LULUS]))
+                                <i class="fas fa-user-check bg-yellow"></i>
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fas fa-clock"></i> 5 mins ago</span>
+                                    <h3 class="timeline-header no-border">
+                                        Data Terverifikasi
+                                    </h3>
+                                </div>
+                            @else
+                                <i class="fas fa-spinner bg-blue"></i>
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fas fa-clock"></i> 5 mins ago</span>
+                                    <h3 class="timeline-header no-border">
+                                        Sedang Diverifikasi Oleh Panitia
+                                    </h3>
+                                </div>
+                            @endif
+                        </div>
+                        <div>
+                            @if (in_array($registration->status_kelulusan, [\App\Models\Registration::STATUS_LULUS]))
+                                <i class="fas fa-handshake bg-green"></i>
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fas fa-clock"></i> 5 mins ago</span>
+                                    <h3 class="timeline-header no-border">
+                                        Selamat!, Anda Diterima
+                                    </h3>
+                                </div>
+                            @else
+                            @if(in_array($registration->status_kelulusan, [\App\Models\Registration::STATUS_VERIFIKASI]))
+                                <i class="fas fa-spinner bg-blue"></i>
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fas fa-clock"></i> 5 mins ago</span>
+                                    <h3 class="timeline-header no-border">
+                                        Sedang Diseleksi Oleh Panitia
+                                    </h3>
+                                </div>
+                                @endif
+                            @endif
+                        </div>
+                        @if ($registration->status_kelulusan == \App\Models\Registration::STATUS_LULUS)
+                            <div>
+                                <i class="fas fa-check bg-gray"></i>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @endif
+            <div class="{{ isset($registration) ? 'col-8' : 'col-12' }}">
                 <div class="card">
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -11,8 +82,9 @@
                             @csrf
                             <div class="row justify-content-between align-items-center">
                                 <h4>Data Siswa</h4>
-                                @if (isset($student))
-                                    <a href="" class="btn btn-secondary">Kirim Data Kepanitia</a>
+                                @if (isset($student) && !$registration)
+                                    <a href="{{ route('students.form-pendaftaran.kirim-ke-panitia') }}"
+                                        class="btn btn-secondary">Kirim Data Kepanitia</a>
                                 @endif
                             </div>
                             <hr>
@@ -20,24 +92,27 @@
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label for="nis">NIS</label>
-                                    <input type="number" class="form-control" name="nis"
-                                        value="{{ old('nis', $student?->nis) }}" id="nis" placeholder="nis">
+                                    <input type="number" {{ isset($registration) ? 'readonly' : '' }}
+                                        class="form-control" name="nis" value="{{ old('nis', $student?->nis) }}"
+                                        id="nis" placeholder="nis">
                                     @error('nis')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="nama">Nama</label>
-                                    <input type="text" class="form-control" name="nama"
-                                        value="{{ old('nama', $student?->nama) }}" id="nama" placeholder="nama">
+                                    <input type="text" {{ isset($registration) ? 'readonly' : '' }} class="form-control"
+                                        name="nama" value="{{ old('nama', $student?->nama) }}" id="nama"
+                                        placeholder="nama">
                                     @error('nama')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="no_hp">No HP</label>
-                                    <input type="number" class="form-control" name="no_hp"
-                                        value="{{ old('no_hp', $student?->no_hp) }}" id="no_hp" placeholder="no_hp">
+                                    <input type="number" {{ isset($registration) ? 'readonly' : '' }}
+                                        class="form-control" name="no_hp" value="{{ old('no_hp', $student?->no_hp) }}"
+                                        id="no_hp" placeholder="no_hp">
                                     @error('no_hp')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -46,7 +121,8 @@
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label for="tempat_lahir">Tempat Lahir</label>
-                                    <input type="text" class="form-control" name="tempat_lahir"
+                                    <input type="text" {{ isset($registration) ? 'readonly' : '' }}
+                                        class="form-control" name="tempat_lahir"
                                         value="{{ old('tempat_lahir', $student?->tempat_lahir) }}" id="tempat_lahir"
                                         placeholder="tempat_lahir">
                                     @error('tempat_lahir')
@@ -56,7 +132,7 @@
                                 <div class="form-group col-md-4">
                                     <label>Tanggal Lahir</label>
                                     <div class="input-group date" id="tanggal_lahir" data-target-input="nearest">
-                                        <input type="text" required
+                                        <input {{ isset($registration) ? 'disabled' : '' }} type="text" required
                                             value="{{ old('tanggal_lahir', $student?->tanggal_lahir ? \Carbon\Carbon::make($student->tanggal_lahir)->format('d/m/Y') : '') }}"
                                             name="tanggal_lahir" class="form-control datetimepicker-input"
                                             data-target="#tanggal_lahir" value="">
@@ -71,7 +147,8 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="anak_ke">Anak Ke</label>
-                                    <input type="number" class="form-control" name="anak_ke"
+                                    <input type="number" {{ isset($registration) ? 'readonly' : '' }}
+                                        class="form-control" name="anak_ke"
                                         value="{{ old('anak_ke', $student?->anak_ke) }}" id="anak_ke"
                                         placeholder="anak_ke">
                                     @error('anak_ke')
@@ -82,8 +159,8 @@
                             <div class="row">
                                 <div class="form-group col-4">
                                     <label>Jenis Kelamin</label>
-                                    <select name="jenis_kelamin" id="jenis_kelamin" class="form-control select2"
-                                        style="width: 100%;">
+                                    <select name="jenis_kelamin" {{ isset($registration) ? 'disabled' : '' }}
+                                        id="jenis_kelamin" class="form-control select2" style="width: 100%;">
                                         <option selected="selected" disabled>-- pilih --</option>
                                         <option
                                             {{ old('jenis_kelamin', $student?->jenis_kelamin) == 'L' ? 'selected' : '' }}
@@ -98,15 +175,17 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="agama">Agama</label>
-                                    <input type="text" class="form-control" name="agama"
-                                        value="{{ old('agama', $student?->agama) }}" id="agama" placeholder="agama">
+                                    <input type="text" {{ isset($registration) ? 'readonly' : '' }}
+                                        class="form-control" name="agama" value="{{ old('agama', $student?->agama) }}"
+                                        id="agama" placeholder="agama">
                                     @error('agama')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="asal_sekolah">Asal Sekolah</label>
-                                    <input type="text" class="form-control" name="asal_sekolah"
+                                    <input type="text" {{ isset($registration) ? 'readonly' : '' }}
+                                        class="form-control" name="asal_sekolah"
                                         value="{{ old('asal_sekolah', $student?->asal_sekolah) }}" id="asal_sekolah"
                                         placeholder="asal_sekolah">
                                     @error('asal_sekolah')
@@ -117,7 +196,8 @@
                             <div class="row">
                                 <div class="form-group col-md-12">
                                     <label for="alamat">Alamat</label>
-                                    <input type="text" class="form-control" name="alamat"
+                                    <input type="text" {{ isset($registration) ? 'readonly' : '' }}
+                                        class="form-control" name="alamat"
                                         value="{{ old('alamat', $student?->alamat) }}" id="alamat" placeholder="alamat">
                                     @error('alamat')
                                         <span class="text-danger">{{ $message }}</span>
@@ -132,7 +212,8 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="nama_ayah">Nama</label>
-                                    <input type="text" class="form-control" name="nama_ayah"
+                                    <input type="text" {{ isset($registration) ? 'readonly' : '' }}
+                                        class="form-control" name="nama_ayah"
                                         value="{{ old('nama_ayah', $student?->nama_ayah) }}" id="nama_ayah"
                                         placeholder="nama_ayah">
                                     @error('nama_ayah')
@@ -141,7 +222,8 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="pekerjaan_ayah">Pekerjaan</label>
-                                    <input type="text" class="form-control" name="pekerjaan_ayah"
+                                    <input type="text" {{ isset($registration) ? 'readonly' : '' }}
+                                        class="form-control" name="pekerjaan_ayah"
                                         value="{{ old('pekerjaan_ayah', $student?->pekerjaan_ayah) }}"
                                         id="pekerjaan_ayah" placeholder="pekerjaan_ayah">
                                     @error('pekerjaan_ayah')
@@ -154,7 +236,8 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="nama_ibu">Nama</label>
-                                    <input type="text" class="form-control" name="nama_ibu"
+                                    <input type="text" {{ isset($registration) ? 'readonly' : '' }}
+                                        class="form-control" name="nama_ibu"
                                         value="{{ old('nama_ibu', $student?->nama_ibu) }}" id="nama_ibu"
                                         placeholder="nama_ibu">
                                     @error('nama_ibu')
@@ -163,7 +246,8 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="pekerjaan_ibu">Pekerjaan</label>
-                                    <input type="text" class="form-control" name="pekerjaan_ibu"
+                                    <input type="text" {{ isset($registration) ? 'readonly' : '' }}
+                                        class="form-control" name="pekerjaan_ibu"
                                         value="{{ old('pekerjaan_ibu', $student?->pekerjaan_ibu) }}" id="pekerjaan_ibu"
                                         placeholder="pekerjaan_ibu">
                                     @error('pekerjaan_ibu')
@@ -174,7 +258,8 @@
                             <div class="row">
                                 <div class="form-group col-md-12">
                                     <label for="alamat_ortu">Alamat</label>
-                                    <input type="text" class="form-control" name="alamat_ortu"
+                                    <input type="text" {{ isset($registration) ? 'readonly' : '' }}
+                                        class="form-control" name="alamat_ortu"
                                         value="{{ old('alamat_ortu', $student?->alamat_ortu) }}" id="alamat_ortu"
                                         placeholder="alamat orang tua">
                                     @error('alamat_ortu')
@@ -187,7 +272,8 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="nama_wali">Nama</label>
-                                    <input type="text" class="form-control" name="nama_wali"
+                                    <input type="text" {{ isset($registration) ? 'readonly' : '' }}
+                                        class="form-control" name="nama_wali"
                                         value="{{ old('nama_wali', $student?->nama_wali) }}" id="nama_wali"
                                         placeholder="nama_wali">
                                     @error('nama_wali')
@@ -196,7 +282,8 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="pekerjaan_wali">Pekerjaan</label>
-                                    <input type="text" class="form-control" name="pekerjaan_wali"
+                                    <input type="text" {{ isset($registration) ? 'readonly' : '' }}
+                                        class="form-control" name="pekerjaan_wali"
                                         value="{{ old('pekerjaan_wali', $student?->pekerjaan_wali) }}"
                                         id="pekerjaan_wali" placeholder="pekerjaan_wali">
                                     @error('pekerjaan_wali')
@@ -207,7 +294,8 @@
                             <div class="row">
                                 <div class="form-group col-md-12">
                                     <label for="alamat_wali">Alamat</label>
-                                    <input type="text" class="form-control" name="alamat_wali"
+                                    <input type="text" {{ isset($registration) ? 'readonly' : '' }}
+                                        class="form-control" name="alamat_wali"
                                         value="{{ old('alamat_wali', $student?->alamat_wali) }}" id="alamat_wali"
                                         placeholder="alamat wali">
                                     @error('alamat_wali')
@@ -215,9 +303,11 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="row justify-content-end">
-                                <button type="submit" class="btn btn-primary mr-2">Simpan</button>
-                            </div>
+                            @if (!isset($registration))
+                                <div class="row justify-content-end">
+                                    <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+                                </div>
+                            @endif
                         </form>
                     </div>
                 </div>

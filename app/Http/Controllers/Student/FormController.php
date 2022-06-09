@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RequestFormStore;
+use App\Models\Registration;
 use App\Models\Student;
 use App\Models\User;
 use Carbon\Carbon;
@@ -14,6 +15,7 @@ class FormController extends Controller
 {
     public function index()
     {
+        $user = User::with('student', 'registration')->find(auth()->user()->id);
         return view('student.form', [
             'breadcrumbs' => [
                 'title' => 'Form Pendaftaran',
@@ -21,7 +23,8 @@ class FormController extends Controller
                     'Form Pendaftaran' => 0
                 ]
             ],
-            'student' => User::with('student')->find(auth()->user()->getAuthIdentifier())->student
+            'student' => $user->student,
+            'registration' => $user->registration
         ]);
     }
 
@@ -38,6 +41,21 @@ class FormController extends Controller
             );
             $message = $request->id ? 'Data berhasil diubah' : 'Data berhasil disimpan';
             return redirect()->route('students.form-pendaftaran')->with('success', $message);
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function kirimKePanitia()
+    {
+        try {
+            Registration::create([
+                'no_daftar' => generateNoDaftar(),
+                'tanggal' => now()->format('Y-m-d'),
+                'user_id' => auth()->user()->id,
+                'status_kelulusan' => Registration::STATUS_SUDAH_KIRIM
+            ]);
+            return redirect()->route('students.form-pendaftaran')->with('success', 'Data berhasil dikirim');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }

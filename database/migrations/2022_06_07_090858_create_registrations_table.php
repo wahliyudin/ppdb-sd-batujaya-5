@@ -18,7 +18,7 @@ class CreateRegistrationsTable extends Migration
             $table->string('no_daftar');
             $table->date('tanggal');
             $table->string('status_kelulusan', 1)->default(0);
-            $table->string('catatan_kelulusan');
+            $table->string('catatan_kelulusan')->nullable();
             $table->unsignedBigInteger('user_id');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -42,6 +42,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 Route::middleware(['auth', 'role:siswa'])->name('students.')->group(function () {
     Route::get('form-pendaftaran', [FormController::class, 'index'])->name('form-pendaftaran');
     Route::post('form-pendaftaran/store', [FormController::class, 'store'])->name('form-pendaftaran.store');
+    Route::get('form-pendaftaran/kirim-ke-panitia', [FormController::class,
+    'kirimKePanitia'])->name('form-pendaftaran.kirim-ke-panitia');
 });
 
 Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth'])->name('dashboard');

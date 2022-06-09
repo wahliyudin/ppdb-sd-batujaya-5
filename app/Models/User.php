@@ -48,4 +48,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Student::class);
     }
+
+    public function registration()
+    {
+        return $this->hasOne(Registration::class);
+    }
 }
