@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PaymentRateController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\TypePaymentController;
 use App\Http\Controllers\HomeController;
@@ -25,7 +26,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix('master-data')->group(function () {
-
+        Route::prefix('tarif-pembayaran')->name('payment-rates.')->group(function () {
+            Route::get('/', [PaymentRateController::class, 'index'])->name('index');
+        });
     });
 
     Route::prefix('data-siswa')->name('students.')->group(function () {

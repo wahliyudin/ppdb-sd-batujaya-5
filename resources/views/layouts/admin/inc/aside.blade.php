@@ -58,16 +58,10 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('admin.type-payments.index') }}"
-                                class="nav-link {{ request()->routeIs('admin.type-payments.index') ? 'active' : '' }}">
+                            <a href="{{ route('admin.payment-rates.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.payment-rates.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Tipe Pembayaran</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Data Pembayaran</p>
+                                <p>Tarif Pembayaran</p>
                             </a>
                         </li>
                     </ul>
