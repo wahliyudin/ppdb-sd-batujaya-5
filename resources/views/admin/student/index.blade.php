@@ -7,10 +7,6 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Data Siswa</h3>
-                        <a href="{{ route('admin.students.create') }}" class="btn btn-sm btn-primary float-right"><i
-                                class="fas fa-plus mr-2"></i>
-                            Tambah
-                            Data</a>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -88,20 +84,20 @@
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: 'nis',
-                        name: 'nis'
+                        data: 'student.nis',
+                        name: 'student.nis'
                     },
                     {
-                        data: 'nama',
-                        name: 'nama'
+                        data: 'student.nama',
+                        name: 'student.nama'
                     },
                     {
-                        data: 'jenis_kelamin',
-                        name: 'jenis_kelamin'
+                        data: 'student.jenis_kelamin',
+                        name: 'student.jenis_kelamin'
                     },
                     {
-                        data: 'no_hp',
-                        name: 'no_hp'
+                        data: 'student.no_hp',
+                        name: 'student.no_hp'
                     },
                     {
                         data: 'action',

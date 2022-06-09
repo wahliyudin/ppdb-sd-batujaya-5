@@ -36,6 +36,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::get('/', [StudentController::class, 'index'])->name('index');
         Route::get('create', [StudentController::class, 'create'])->name('create');
         Route::get('{id}/edit', [StudentController::class, 'edit'])->name('edit');
+        Route::get('{id}/show', [StudentController::class, 'show'])->name('show');
+
+        Route::get('verif-berkas/{id}/{status}', [StudentController::class, 'verifBerkas'])->name('verif-berkas');
     });
 });
 

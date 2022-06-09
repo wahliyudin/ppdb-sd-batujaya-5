@@ -29,4 +29,16 @@ class Registration extends Model
     {
         return $this->belongsTo(Student::class);
     }
+
+    // public function getStatusKelulusanAttribute($value)
+    // {
+    //     switch ($value) {
+    //         case -1:
+    //             return "Dikembalikan";
+    //             break;
+    //         case 2:
+    //             return "Dikembalikan";
+    //             break;
+    //     }
+    // }
 }
