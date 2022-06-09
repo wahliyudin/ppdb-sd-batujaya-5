@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\PaymentRateController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\TypePaymentController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Student\FormController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,8 +39,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     });
 });
 
-Route::middleware(['auth', 'role:siswa'])->name('student.')->group(function () {
-    Route::get('', []);
+Route::middleware(['auth', 'role:siswa'])->name('students.')->group(function () {
+    Route::get('form-pendaftaran', [FormController::class, 'index'])->name('form-pendaftaran');
+    Route::post('form-pendaftaran/store', [FormController::class, 'store'])->name('form-pendaftaran.store');
 });
 
 Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth'])->name('dashboard');

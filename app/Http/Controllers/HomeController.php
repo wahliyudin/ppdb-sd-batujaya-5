@@ -11,6 +11,6 @@ class HomeController extends Controller
         if (auth()->user()->hasRole('admin')) {
             return redirect()->route('admin.dashboard');
         }
-        return view('dashboard');
+        return redirect()->route('students.form-pendaftaran');
     }
 }

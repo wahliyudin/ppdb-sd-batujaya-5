@@ -12,14 +12,15 @@ class Student extends Model
     protected $fillable = [
         'nis',
         'nama',
-        'asal_sekolah',
+        'no_hp',
         'tempat_lahir',
         'tanggal_lahir',
+        'anak_ke',
         'jenis_kelamin',
         'agama',
-        'anak_ke',
+        'asal_sekolah',
         'alamat',
-        'no_hp',
+
         'nama_ayah',
         'pekerjaan_ayah',
         'nama_ibu',
@@ -31,15 +32,15 @@ class Student extends Model
         'user_id'
     ];
 
-    public function getJenisKelaminAttribute($value)
-    {
-        switch ($value) {
-            case 'L':
-                return 'Laki-laki';
-                break;
-            case 'P':
-                return 'Perempuan';
-                break;
-        }
-    }
+    // public function getJenisKelaminAttribute($value)
+    // {
+    //     switch ($value) {
+    //         case 'L':
+    //             return 'Laki-laki';
+    //             break;
+    //         case 'P':
+    //             return 'Perempuan';
+    //             break;
+    //     }
+    // }
 }
