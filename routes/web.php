@@ -25,9 +25,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix('master-data')->group(function () {
-        Route::prefix('tipe-pembayaran')->name('type-payments.')->group(function () {
-            Route::get('/', [TypePaymentController::class, 'index'])->name('index');
-        });
+
     });
 
     Route::prefix('data-siswa')->name('students.')->group(function () {
