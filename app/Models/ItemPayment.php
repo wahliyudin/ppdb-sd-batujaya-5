@@ -11,8 +11,10 @@ class ItemPayment extends Model
 
     protected $fillable = [
         'payment_id',
+        'tanggal',
         'no_pembayaran',
         'nominal',
+        'kembalian',
         'keterangan'
     ];
 }

@@ -6,20 +6,22 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Data Tipe Pembayaran</h3>
-                        <button class="btn btn-sm btn-primary float-right" id="addNewTypePayment"><i
+                        <h3 class="card-title">Data Pembayaran</h3>
+                        <a href="{{ route('admin.payments.create') }}" class="btn btn-sm btn-primary float-right"><i
                                 class="fas fa-plus mr-2"></i>
                             Tambah
-                            Data</button>
+                            Bayar</a>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="type_payment" class="table table-bordered table-striped">
+                        <table id="payment" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama</th>
-                                    <th>Nominal</th>
+                                    <th>Nama Siswa</th>
+                                    <th>Tagihan</th>
+                                    <th>Total Bayar</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -32,7 +34,6 @@
             </div>
         </div>
     </div>
-    @include('admin.type-payment.modal')
 @endsection
 @include('layouts.inc.datatables')
 @include('layouts.inc.toastr')
@@ -58,7 +59,7 @@
     <script type="text/javascript">
         var table;
         setTimeout(function() {
-            tabletype_payment();
+            tablepayment();
         }, 500);
         var ajaxError = function(jqXHR, xhr, textStatus, errorThrow, exception) {
             if (jqXHR.status === 0) {
@@ -87,14 +88,14 @@
         });
 
         // function to retrieve DataTable server side
-        function tabletype_payment() {
-            $('#type_payment').dataTable().fnDestroy();
-            table = $('#type_payment').DataTable({
+        function tablepayment() {
+            $('#payment').dataTable().fnDestroy();
+            table = $('#payment').DataTable({
                 responsive: true,
                 serverSide: true,
                 processing: true,
                 ajax: {
-                    url: "{{ route('api.type-payments.index') }}",
+                    url: "{{ route('api.payments.index') }}",
                     type: "POST",
                     data: {
                         "_token": "{{ csrf_token() }}"
@@ -105,12 +106,20 @@
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: 'nama',
-                        name: 'nama'
+                        data: 'user.student.nama',
+                        name: 'user.student.nama'
                     },
                     {
-                        data: 'nominal',
-                        name: 'nominal'
+                        data: 'tagihan',
+                        name: 'tagihan'
+                    },
+                    {
+                        data: 'total_bayar',
+                        name: 'total_bayar'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
                     },
                     {
                         data: 'action',
@@ -126,110 +135,5 @@
                 ]
             });
         }
-
-        $('#addNewTypePayment').click(function() {
-            $('#addEditTypePaymentForm').trigger("reset");
-            $("#id").val('');
-            $('.modal-title').html("Tambah Tipe Pembayaran");
-            $('#TypePayment-modal').modal('show');
-        });
-
-        $('body').on('click', '.edit', function() {
-            var id = $(this).data('id');
-
-            // ajax
-            $.ajax({
-                type: "GET",
-                url: "{{ url('/') }}/api/type-payments/" + id + "/edit",
-                dataType: 'json',
-                success: function(res) {
-                    $('.modal-title').html("Edit Tipe Pembayaran");
-                    $('#TypePayment-modal').modal('show');
-                    $('#id').val(res.data.id);
-                    $('#nama').val(res.data.nama);
-                    $('#nominal').val(formatRupiah(String(res.data.nominal), 'Rp.'));
-                },
-                error: ajaxError,
-            });
-        });
-
-        $('body').on('click', '#btn-save', function(event) {
-            var id = $("#id").val();
-            var nama = $("#nama").val();
-            var nominal = $("#nominal").val();
-            $("#btn-save").html('Please Wait...');
-            $("#btn-save").attr("disabled", true);
-
-            // ajax
-            $.ajax({
-                type: "POST",
-                url: "{{ route('api.type-payments.update-or-create') }}",
-                data: {
-                    id: id,
-                    nama: nama,
-                    nominal: nominal
-                },
-                dataType: 'json',
-                success: function(res) {
-                    table.ajax.reload();
-                    $("#btn-save").html('Submit');
-                    $("#btn-save").attr("disabled", false);
-                    toastr.success(res.message, 'Berhasil!');
-                    $('#TypePayment-modal').modal('hide');
-                },
-                error: ajaxError,
-            });
-        });
-
-        // // delete
-        $('body').on('click', '.delete', function(e) {
-            e.preventDefault();
-            deletetype_payment($(this).attr('id'))
-        });
-
-        function deletetype_payment(id) {
-            Swal.fire({
-                title: 'Apakah Anda Yakin?',
-                text: "Tipe Pembayaran akan dihapus secara permanen!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Hapus Sekarang!'
-            }).then((result) => {
-                if (result.value) {
-                    $.ajax({
-                        url: "{{ url('/') }}/api/type-payments/" + id + "/destroy",
-                        type: 'DELETE',
-                        success: function(resp) {
-                            toastr.success(resp.message, 'Berhasil!');
-                            table.ajax.reload();
-                        },
-                        error: ajaxError,
-                    });
-                }
-            })
-        }
-
-        function formatRupiah(angka, prefix) {
-            var number_string = angka.replace(/[^,\d]/g, '').toString(),
-                split = number_string.split(','),
-                sisa = split[0].length % 3,
-                rupiah = split[0].substr(0, sisa),
-                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-            // tambahkan titik jika yang di input sudah menjadi angka satuan ribuan
-            if (ribuan) {
-                separator = sisa ? '.' : '';
-                rupiah += separator + ribuan.join('.');
-            }
-
-            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
-        }
-
-        $('#nominal').keyup(function(e) {
-            $(this).val(formatRupiah(e.target.value, 'Rp.'));
-        });
     </script>
 @endpush

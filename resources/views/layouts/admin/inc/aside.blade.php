@@ -64,7 +64,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="" class="nav-link">
+                        <a href="{{ route('admin.payments.index') }}"
+                            class="nav-link {{ request()->routeIs('admin.payments.index') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-exchange-alt"></i>
                             <p>
                                 Transaksi

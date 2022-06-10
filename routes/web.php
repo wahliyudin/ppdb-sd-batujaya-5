@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PaymentRateController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\TypePaymentController;
@@ -40,6 +41,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::get('{id}/show', [StudentController::class, 'show'])->name('show');
 
         Route::get('verif-berkas/{id}/{status}', [StudentController::class, 'verifBerkas'])->name('verif-berkas');
+    });
+
+    Route::prefix('transaksi')->name('payments.')->group(function () {
+        Route::get('/', [PaymentController::class, 'index'])->name('index');
+        Route::get('create', [PaymentController::class, 'create'])->name('create');
+        Route::get('{id}/show', [PaymentController::class, 'show'])->name('show');
     });
 });
 

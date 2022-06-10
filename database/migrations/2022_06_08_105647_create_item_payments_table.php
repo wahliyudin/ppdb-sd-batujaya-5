@@ -17,7 +17,9 @@ class CreateItemPaymentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('payment_id');
             $table->string('no_pembayaran');
+            $table->date('tanggal');
             $table->bigInteger('nominal');
+            $table->bigInteger('kembalian')->default(0);
             $table->string('keterangan')->nullable();
 
             $table->foreign('payment_id')->references('id')->on('payments')->onDelete('cascade');

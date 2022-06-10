@@ -52,4 +52,24 @@ class StudentController extends Controller
             ], $code);
         }
     }
+
+    public function studentPayment($id)
+    {
+        try {
+            $user = User::with('payment')->find($id);
+            if (!$user) {
+                throw new Exception('Data Siswa tidak ditemukan!', 400);
+            }
+            return response()->json([
+                'status' => 'success',
+                'data' => $user,
+            ]);
+        } catch (\Exception $th) {
+            $th->getCode() == 400 ? $code = 400 : $code = 500;
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage()
+            ], $code);
+        }
+    }
 }

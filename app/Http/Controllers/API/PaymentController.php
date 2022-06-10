@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PaymentRequestStore;
 use App\Models\Payment;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -14,41 +16,47 @@ class PaymentController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Payment::latest()->get();
+            $data = Payment::with('user.student')->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm"
-        data-id="' . Crypt::encrypt($row->id) . '">Ubah</a> <a href="javascript:void(0)"
-        class="delete btn btn-danger btn-sm" id="' . Crypt::encrypt($row->id) . '">Hapus</a>';
+                    $actionBtn = '<a href="'.route('admin.payments.show', Crypt::encrypt($row->id)).'" class="btn btn-success btn-sm">detail</a>';
                     return $actionBtn;
                 })
-                ->addColumn('nominal', function ($row) {
-                    return numberFormat($row->nominal, 'Rp.');
+                ->addColumn('tagihan', function ($row) {
+                    return numberFormat($row->tagihan, 'Rp.');
+                })
+                ->addColumn('total_bayar', function ($row) {
+                    return numberFormat($row->total_bayar, 'Rp.');
+                })
+                ->addColumn('status', function ($row) {
+                    return $row->tagihan == $row->total_bayar ? 'Lunas' : 'Belum Lunas';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
     }
 
-    public function updateOrCreate(Request $request)
+    public function store(PaymentRequestStore $request)
     {
         try {
-            if (isset($request->nominal)) {
-                $request->merge(['nominal' => replaceRupiah($request->nominal)]);
-            }
-            Payment::updateOrCreate(
-                [
-                    'id' => $request->id
-                ],
-                [
-                    'nama' => $request->nama,
-                    'nominal' => $request->nominal
-                ]
-            );
+            $payment = Payment::where('user_id', $request->user_id)->first();
+            $payment->itemPayments()->create([
+                'payment_id' => $payment->id,
+                'no_pembayaran' => $request->no_pembayaran,
+                'nominal' => $request->nominal,
+                'tanggal' => Carbon::make($request->tanggal)->format('Y-m-d'),
+                'kembalian' => $request->kembalian,
+                'keterangan' => $request->keterangan
+            ]);
+            $payment->update([
+                'status' => $payment->total_bayar + ($request->nominal - $request->kembalian) == $payment->tagihan ?
+                Payment::STATUS_LUNAS : Payment::STATUS_BELUM_LUNAS,
+                'total_bayar' => $payment->total_bayar + ($request->nominal - $request->kembalian)
+            ]);
             return response()->json([
                 'status' => 'success',
-                'message' => isset($request->id) ? 'Ubah Data Tipe Pembayaran' : 'Menambahkan data Tipe Pembayaran',
+                'message' => 'Pembayaran berhasil',
             ]);
         } catch (\Exception $th) {
             $th->getCode() == 400 ? $code = 400 : $code = 500;

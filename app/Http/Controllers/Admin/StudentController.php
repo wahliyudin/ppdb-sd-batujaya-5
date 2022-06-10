@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Payment;
+use App\Models\PaymentRate;
+use App\Models\Registration;
 use App\Models\User;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
@@ -52,6 +55,12 @@ class StudentController extends Controller
                 'status_kelulusan' => $status,
                 'catatan_kelulusan' => isset($_GET['catatan_kelulusan']) ? $_GET['catatan_kelulusan'] : '',
             ]);
+            if ($status == Registration::STATUS_LULUS) {
+                Payment::create([
+                    'user_id' => $user->id,
+                    'tagihan' => PaymentRate::first()->nominal,
+                ]);
+            }
 
             return redirect()->route('admin.students.show', Crypt::encrypt($user->id))
                 ->with('success', 'Calon siswa berhasil diverifikasi.');

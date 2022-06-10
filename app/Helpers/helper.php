@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ItemPayment;
 use App\Models\Registration;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -30,6 +31,18 @@ if (!function_exists('generateNoDaftar')) {
             return $thnBulan . '10000001';
         } else {
             return $thnBulan . (int) substr(Registration::get()->last()->no_daftar, -8) + 1;
+        }
+    }
+}
+
+if (!function_exists('generateNoPayment')) {
+    function generateNoPayment()
+    {
+        $thnBulan = Carbon::now()->year . Carbon::now()->month;
+        if (ItemPayment::count() === 0) {
+            return $thnBulan . '10000001';
+        } else {
+            return $thnBulan . (int) substr(ItemPayment::get()->last()->no_pembayaran, -8) + 1;
         }
     }
 }

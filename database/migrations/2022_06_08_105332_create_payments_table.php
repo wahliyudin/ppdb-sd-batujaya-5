@@ -15,11 +15,12 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('user_id');
             $table->bigInteger('tagihan');
             $table->bigInteger('total_bayar')->default(0);
+            $table->boolean('status')->default(false);
 
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
