@@ -17,7 +17,7 @@ class CreateRegistrationsTable extends Migration
             $table->id();
             $table->string('no_daftar');
             $table->date('tanggal');
-            $table->string('status_kelulusan', 1)->default(0);
+            $table->string('status_kelulusan', 2)->default(0);
             $table->string('catatan_kelulusan')->nullable();
             $table->unsignedBigInteger('user_id');
 

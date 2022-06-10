@@ -61,6 +61,9 @@ class StudentController extends Controller
                     'tagihan' => PaymentRate::first()->nominal,
                 ]);
             }
+            if ($status == Registration::STATUS_TIDAK_LULUS || $status == Registration::STATUS_TOLAK) {
+                isset($user->payment) ? $user->payment->delete() : '';
+            }
 
             return redirect()->route('admin.students.show', Crypt::encrypt($user->id))
                 ->with('success', 'Calon siswa berhasil diverifikasi.');

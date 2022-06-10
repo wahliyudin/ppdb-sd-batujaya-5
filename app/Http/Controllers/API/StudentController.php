@@ -15,8 +15,7 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::with('student')->whereRoleIs('siswa')->latest()->get();
-            $data = isset($data[0]->student) ? $data : [];
+            $data =User::with('student')->has('student')->whereRoleIs('siswa')->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {

@@ -39,6 +39,13 @@ class FormController extends Controller
                 ],
                 $request->all()
             );
+            if (isset($request->id)) {
+                $user = User::with('registration')->find($request->user_id);
+                if (in_array($user->registration->status_kelulusan, [Registration::STATUS_KEMBALIKAN,
+                Registration::STATUS_TOLAK])) {
+                    $user->registration()->update(['status_kelulusan' => Registration::STATUS_SUDAH_KIRIM]);
+                }
+            }
             $message = $request->id ? 'Data berhasil diubah' : 'Data berhasil disimpan';
             return redirect()->route('students.form-pendaftaran')->with('success', $message);
         } catch (\Throwable $th) {
