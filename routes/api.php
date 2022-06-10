@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\PaymentRateController;
+use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\StudentController;
 use App\Http\Controllers\API\TypePaymentController;
 use Illuminate\Http\Request;
@@ -32,5 +33,9 @@ Route::name('api.')->group(function () {
         Route::post('update-or-create', [PaymentRateController::class, 'updateOrCreate'])->name('update-or-create');
         Route::get('{id}/edit', [PaymentRateController::class, 'edit'])->name('edit');
         Route::delete('{id}/destroy', [PaymentRateController::class, 'destroy'])->name('destroy');
+    });
+    Route::prefix('profiles')->name('profiles.')->group(function () {
+        Route::put('update-profile', [ProfileController::class, 'updateProfile'])->name('update-profile');
+        Route::put('update-password', [ProfileController::class, 'updatePassword'])->name('update-password');
     });
 });

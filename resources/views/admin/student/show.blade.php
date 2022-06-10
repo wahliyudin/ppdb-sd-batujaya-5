@@ -11,9 +11,9 @@
                         </div>
                         <div class="float-right">
                             <a class="btn btn-primary btn-sm" href="{{ route('admin.students.index') }}"> Back</a>
-                            @if ($user->registration?->status_kelulusan == 2)
+                            @if ($user->registration?->status_kelulusan == \App\Models\Registration::STATUS_VERIFIKASI)
                                 <a class="btn btn-success btn-sm"
-                                    href="{{ route('admin.students.verif-berkas', [Crypt::encrypt($user->id), 4]) }}"
+                                    href="{{ route('admin.students.verif-berkas', [Crypt::encrypt($user->id), \App\Models\Registration::STATUS_LULUS]) }}"
                                     onclick="if(confirm('Apakah anda yakin akan meluluskan pendaftar ini ?')){return true}else{return false}">
                                     Lulus</a>
                                 <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalTidakLulus">
@@ -31,7 +31,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <form
-                                                    action="{{ route('admin.students.verif-berkas', [Crypt::encrypt($user->id), 5]) }}"
+                                                    action="{{ route('admin.students.verif-berkas', [Crypt::encrypt($user->id), \App\Models\Registration::STATUS_TIDAK_LULUS]) }}"
                                                     id="formtidaklulus">
                                                     <label for="">Catatan</label>
                                                     <textarea name="catatan_kelulusan" class="form-control" cols="30" rows="10"></textarea>
@@ -47,9 +47,9 @@
                                     </div><!-- /.modal-dialog -->
                                 </div><!-- /.modal -->
                             @endif
-                            @if ($user->registration?->status_kelulusan == 1)
+                            @if ($user->registration?->status_kelulusan == \App\Models\Registration::STATUS_SUDAH_KIRIM)
                                 <a class="btn btn-success btn-sm"
-                                    href="{{ route('admin.students.verif-berkas', [Crypt::encrypt($user->id), 2]) }}"
+                                    href="{{ route('admin.students.verif-berkas', [Crypt::encrypt($user->id), \App\Models\Registration::STATUS_VERIFIKASI]) }}"
                                     onclick="if(confirm('Apakah anda yakin akan memverifikasi berkas pendaftar ini ?')){return true}else{return false}">
                                     Verifikasi Berkas</a>
                                 <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal">
@@ -67,7 +67,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <form
-                                                    action="{{ route('admin.students.verif-berkas', [Crypt::encrypt($user->id), -1]) }}"
+                                                    action="{{ route('admin.students.verif-berkas', [Crypt::encrypt($user->id), \App\Models\Registration::STATUS_KEMBALIKAN]) }}"
                                                     id="formkembali">
                                                     <label for="">Catatan Pengembalian</label>
                                                     <textarea name="catatan_kelulusan" class="form-control" cols="30" rows="10"></textarea>
@@ -98,7 +98,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <form
-                                                    action="{{ route('admin.students.verif-berkas', [Crypt::encrypt($user->id), 3]) }}"
+                                                    action="{{ route('admin.students.verif-berkas', [Crypt::encrypt($user->id), \App\Models\Registration::STATUS_TOLAK]) }}"
                                                     id="formtolak">
                                                     <label for="">Catatan Penolakan</label>
                                                     <textarea name="catatan_kelulusan" class="form-control" cols="30" rows="10"></textarea>
@@ -131,7 +131,7 @@
                     </div>
                 </div>
 
-                @if ($user->registration?->status_kelulusan >= 1)
+                @if ($user->registration?->status_kelulusan >= \App\Models\Registration::STATUS_SUDAH_KIRIM)
                     @include('admin.student.ringkasan')
                 @endif
             </div>

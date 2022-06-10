@@ -1,4 +1,6 @@
-[] CRUD Student
+[] Profile
+[] pix bug pendaftaran
 [] Tansaksi
-[] CRUD Data Pembayaran
 [] Laporan
+[] dashboard
+[] fix bug

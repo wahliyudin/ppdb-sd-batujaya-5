@@ -44,7 +44,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="" class="nav-link">
+                        <a href="{{ route('students.profiles.index') }}"
+                            class="nav-link {{ request()->routeIs('students.profiles.index') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-address-card"></i>
                             <p>
                                 Profile
