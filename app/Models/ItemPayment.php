@@ -17,4 +17,9 @@ class ItemPayment extends Model
         'kembalian',
         'keterangan'
     ];
+
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
+    }
 }

@@ -5,15 +5,6 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    {{-- <div class="card-header">
-                        <a href="{{ route('panitia.exports.bukti-pembayaran', [
-                            'student_id' => Crypt::encrypt($student->id),
-                            'type_of_payment_id' => Crypt::encrypt($payment->typeOfPayment->id),
-                            'name_type_of_payment' => Crypt::encrypt($payment->typeOfPayment->name),
-                        ]) }}"
-                            target="_blank" class="btn btn-sm btn-success mr-2 float-right"><i class="fas fa-print mr-1"></i>
-                            Cetak All</a>
-                    </div> --}}
                     <!-- /.card-header -->
                     <div class="card-body">
                         <table id="payment" class="table table-bordered table-striped">
@@ -24,7 +15,7 @@
                                     <th>Tanggal</th>
                                     <th>Jumlah Bayar</th>
                                     <th>Keterangan</th>
-                                    {{-- <th>Aksi</th> --}}
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -35,17 +26,14 @@
                                         <td>{{ $item_payment->tanggal }}</td>
                                         <td>{{ numberFormat((int) $item_payment->nominal, 'Rp.') }}</td>
                                         <td>{{ $item_payment->keterangan }}</td>
-                                        {{-- <td>
+                                        <td>
                                             <div class="d-flex align-item-center">
-                                                <a href="{{ route('panitia.exports.bukti-pembayaran.pertransaksi', [
-                                                    'student_id' => Crypt::encrypt($student->id),
-                                                    'item_payment_id' => Crypt::encrypt($item_payment->id),
-                                                ]) }}"
+                                                <a href="{{ route('admin.payments.bukti-pembayaran', Crypt::encrypt($item_payment->id)) }}"
                                                     target="_blank" class="btn btn-sm btn-success mr-2"><i
                                                         class="fas fa-print mr-1"></i>
                                                     Cetak</a>
                                             </div>
-                                        </td> --}}
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

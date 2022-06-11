@@ -47,6 +47,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::get('/', [PaymentController::class, 'index'])->name('index');
         Route::get('create', [PaymentController::class, 'create'])->name('create');
         Route::get('{id}/show', [PaymentController::class, 'show'])->name('show');
+
+        Route::get('{id}/bukti-pembayaran', [PaymentController::class, 'cetakBukti'])->name('bukti-pembayaran');
     });
 });
 

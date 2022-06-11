@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ItemPayment;
 use App\Models\Payment;
 use App\Models\Registration;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -58,5 +60,17 @@ class PaymentController extends Controller
             ],
             'payment' => Payment::with('itemPayments')->find($id)
         ]);
+    }
+
+    public function cetakBukti($id)
+    {
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+
+        }
+        $item_payment = ItemPayment::with('payment.user.student')->find($id);
+        $pdf = Pdf::loadView('admin.exports.bukti-pembayaran', compact('item_payment'));
+        return $pdf->setPaper('A4')->stream();
     }
 }
