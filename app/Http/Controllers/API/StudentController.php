@@ -23,6 +23,9 @@ class StudentController extends Controller
                         class="btn btn-success btn-sm">Detail</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm" id="' . Crypt::encrypt($row->id) . '">Hapus</a>';
                     return $actionBtn;
                 })
+                ->addColumn('student.jenis_kelamin', function($row){
+                    return $row->student->jenis_kelamin == 'L'? 'Laki-laki' :'Perempuan';
+                })
                 ->rawColumns(['action'])
                 ->make(true);
         }
